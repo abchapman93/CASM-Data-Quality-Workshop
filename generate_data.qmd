@@ -251,6 +251,8 @@ pts_final = encounters_final %>%
 deaths_final = mutate(deaths, dod=add_yrs_decimal_to_date(time0, dob+age_at_death)+days(sample(0:30, 1))) %>%
   select(subject_id, dod)
 
+medications = filter(encounters_final, abx==1) %>%
+  select(encounter_id, abx)
 
 encounters_final = encounters_final %>%
   select(encounter_id, subject_id, date, pna)
@@ -258,4 +260,11 @@ encounters_final = encounters_final %>%
 
 ```{r}
 head(deaths_final)
+```
+
+```{r}
+write.csv(encounters_final, file = "./data/encounter.csv", row.names = FALSE)
+write.csv(pts_final, file = "./data/patient.csv", row.names = FALSE)
+write.csv(deaths_final, file = "./data/death.csv", row.names = FALSE)
+write.csv(medications, file = "./data/medication.csv", row.names = FALSE)
 ```
